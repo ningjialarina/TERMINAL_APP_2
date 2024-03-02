@@ -18,7 +18,7 @@ async function generateQuestion(currentContext, userResponse) {
 // Main function
 async function main() {
   say(
-    "Hello! I'm here to help you assess which part of your body is currently feeling the most uncomfortable. Please respond to the following questions with 'yes' or 'no' only."
+    "How are u!🙌 I'm here to help you assess which part of your body is currently feeling the most uncomfortable.😰 Please respond to the following questions with 'yes' or 'no' only."
   );
 
   let currentContext = "physical discomfort"; // Starting topic
