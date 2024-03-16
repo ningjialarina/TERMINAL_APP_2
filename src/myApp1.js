@@ -77,9 +77,10 @@ async function main() {
       temperature: 0.3,
     });
 
-    const adviceMessage = `Here are the advices for your discomforts:\n${reportedDiscomfortString}`;
+    //BASIC ADVICE
+    const basicAdvice = `Here are the advices for your discomforts:\n${reportedDiscomfortString}`;
     say(
-      boxen(chalk.green(adviceMessage), {
+      boxen(chalk.green(basicAdvice), {
         padding: 1,
         borderColor: "green",
         borderStyle: "round",
@@ -98,45 +99,72 @@ async function main() {
 
     userResponse = await ask(chalk.cyan(tcmInterestQuestionString));
 
+    //TCM Point
     if (userResponse.toLowerCase() === "yes") {
       const tcmAdvicePrompt = `Based on the discomforts reported: ${discomfortsForPrompt}, provide Traditional Chinese Medicine point advice for each discomfort. Only include specific body points, points information, and function. Do not say you are an AI.`;
       const tcmAdvice = await gptPrompt(tcmAdvicePrompt, {
         max_tokens: 1024,
         temperature: 0.5,
       });
-      say(
-        boxen(
-          chalk.green(
-            `Great! Let's proceed with the TCM point advice.\n${tcmAdvice}`
-          ),
-          {
-            padding: 1,
-            borderColor: "green",
-            borderStyle: "round",
-          }
-        )
-      );
 
-      const tcmAdvicePrompt2 = `Only give massage instrutions about \n${tcmAdvice} in 50 words.Do not say you are an AI.`;
-      const tcmAdvice2 = await gptPrompt(tcmAdvicePrompt2, {
-        max_tokens: 50,
-        temperature: 0.5,
-      });
-      say(
-        boxen(chalk.green(`When applying acupressure:.\n${tcmAdvice2}`), {
+      console.log(); // Print an empty line for spacing
+      console.log(
+        boxen(dedent`\n${tcmAdvice}`, {
+          title: "Great! Let's proceed with the TCM point advice.",
           padding: 1,
           borderColor: "green",
           borderStyle: "round",
         })
       );
+      console.log(); // Print an empty line for spacing
 
-      const tcmAdvicePrompt3 = `Give a caution sentence. Do not say you are an AI.These advices only for people who do not want to do acupuncture. Do not try if pregnency or have serious illness, go to hospital.`;
-      const tcmAdvice3 = await gptPrompt(tcmAdvicePrompt3, {
+      //Massage Instructions
+      const massageInstructions = `Only give massage instrutions about \n${tcmAdvice} in 50 words.Do not say you are an AI.`;
+      const tcmAdvice2 = await gptPrompt(massageInstructions, {
         max_tokens: 50,
         temperature: 0.5,
       });
-      say(
-        boxen(chalk.green(`Caution.\n${tcmAdvice3}`), {
+      console.log(); // Print an empty line for spacing
+      console.log(
+        boxen(dedent`\n${tcmAdvice2}`, {
+          title: "Massage Instrutions",
+          padding: 1,
+          borderColor: "green",
+          borderStyle: "round",
+        })
+      );
+      console.log(); // Print an empty line for spacing
+
+      //Caution
+      const Caution = `Give a caution sentence. Do not say you are an AI.These advices are only for people who do not want to do acupuncture. Do not try if pregnant or have serious illness, go to hospital.`;
+      const tcmAdvice3 = await gptPrompt(Caution, {
+        max_tokens: 50,
+        temperature: 0.5,
+      });
+
+      // Using console.log for printing to the console. Replace with your print function if necessary.
+      console.log(); // Print an empty line for spacing
+      console.log(
+        boxen(dedent`\n${tcmAdvice3}`, {
+          title: "Caution",
+          padding: 1,
+          borderColor: "red",
+          borderStyle: "round",
+        })
+      );
+      console.log(); // Print an empty line for spacing
+
+      // Tuina Plan
+      const tuinaPlan = `Give a specialized Tuina (massage) treatment plan directly for several weeks based on \n${tcmAdvice}. A general guidline, do not be so specific and serious. Do not say you are an AI.`;
+      const tcmAdvice4 = await gptPrompt(tuinaPlan, {
+        max_tokens: 1000,
+        temperature: 0.5,
+      });
+
+      console.log(); // Print an empty line for spacing
+      console.log(
+        boxen(dedent`\n${tcmAdvice4}`, {
+          title: "Your Long-term Maintenance",
           padding: 1,
           borderColor: "green",
           borderStyle: "round",
